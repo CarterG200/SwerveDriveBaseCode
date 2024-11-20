@@ -32,9 +32,10 @@ public class RobotContainer {
     private final SwerveSubsystem swerveSubsystem;
 
     // Control Inputs
-    private final Joystick driverJoystick = new Joystick(OIConstants.kOperatorControllerPort);
-    private final Joystick translateStick = new Joystick(OIConstants.kDriverTranslateStickPort);
-    private final Joystick rotateStick = new Joystick(OIConstants.kDriverRotateStickPort);
+    private final Joystick operatorJoystick = new Joystick(OIConstants.kOperatorControllerPort);
+    private final Joystick driverJoystick = new Joystick(OIConstants.kDriverControllerPort);
+    // private final Joystick translateStick = new Joystick(OIConstants.kDriverTranslateStickPort);
+    // private final Joystick rotateStick = new Joystick(OIConstants.kDriverRotateStickPort);
 
 
 
@@ -45,11 +46,11 @@ public class RobotContainer {
 
         swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
             swerveSubsystem,
-            () -> -translateStick.getRawAxis(OIConstants.kDriverYAxis),
-            () -> -translateStick.getRawAxis(OIConstants.kDriverXAxis),
-            () -> rotateStick.getRawAxis(0),
-            () -> translateStick.getRawButton(1),
-            () -> rotateStick.getRawButton(1)));
+            () -> -driverJoystick.getRawAxis(OIConstants.kDriverYAxis),
+            () -> -driverJoystick.getRawAxis(OIConstants.kDriverXAxis),
+            () -> driverJoystick.getRawAxis(OIConstants.kDriverRotAxis),
+            () -> driverJoystick.getRawButton(1),
+            () -> driverJoystick.getRawButton(1)));
 
 
         configureBindings();

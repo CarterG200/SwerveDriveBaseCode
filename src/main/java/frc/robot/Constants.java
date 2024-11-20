@@ -18,8 +18,8 @@ public class Constants {
 
     public static final class DriveConstants {
 
-        public static final double kTrackWidth = Units.inchesToMeters(0); // Distance between right and left wheels
-        public static final double kWheelBase = Units.inchesToMeters(0); // Distance between front and back wheels
+        public static final double kTrackWidth = Units.inchesToMeters(27.5); // Distance between right and left wheels
+        public static final double kWheelBase = Units.inchesToMeters(27.5); // Distance between front and back wheels
 
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
                 new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), // back left
@@ -28,22 +28,22 @@ public class Constants {
                 new Translation2d(kWheelBase / 2, kTrackWidth / 2)); // front right
 
         // DRIVE Motor Ports
-        public static final int kFrontLeftDriveMotorPort = 0;
-        public static final int kBackLeftDriveMotorPort = 0;
-        public static final int kFrontRightDriveMotorPort = 0;
-        public static final int kBackRightDriveMotorPort = 0;
+        public static final int kFrontLeftDriveMotorPort = 2;
+        public static final int kBackLeftDriveMotorPort = 8;
+        public static final int kFrontRightDriveMotorPort = 4;
+        public static final int kBackRightDriveMotorPort = 6;
 
         // TURNING Motor Ports
-        public static final int kFrontLeftTurningMotorPort = 0;
-        public static final int kBackLeftTurningMotorPort = 0;
-        public static final int kFrontRightTurningMotorPort = 0;
-        public static final int kBackRightTurningMotorPort = 0;
+        public static final int kFrontLeftTurningMotorPort = 1;
+        public static final int kBackLeftTurningMotorPort = 7;
+        public static final int kFrontRightTurningMotorPort = 3;
+        public static final int kBackRightTurningMotorPort = 5;
 
         // CANCoder Ids
-        public static final int kFrontLeftCANCoderId = 0;
-        public static final int kBackLeftCANCoderId = 0;
-        public static final int kFrontRightCANCoderId = 0;
-        public static final int kBackRightCANCoderId = 0;
+        public static final int kFrontLeftCANCoderId = 20;
+        public static final int kBackLeftCANCoderId = 23;
+        public static final int kFrontRightCANCoderId = 21;
+        public static final int kBackRightCANCoderId = 22;
 
         // Invert booleans | We use MK4i modules so the turning motors are inverted
         public static final boolean kModuleTurningEncoderReversed = true;
@@ -52,14 +52,14 @@ public class Constants {
         public static final boolean kGyroReversed = true;
 
         // Turning encoder offsets
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0 * Math.PI / 180;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 0 * Math.PI / 180;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 0 * Math.PI / 180;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0 * Math.PI / 180;
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 3.927;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 1.39;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 4.71;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.047;
 
         // Robot speeds
         public static final double kPhysicalMaxSpeedMetersPerSecond = 3.6; // PHYSICAL max speed of the modules (safety cap) 3.6
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = 1; // Max speed set for teleop
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = 2; // Max speed set for teleop
 
         // Robot turning speeds
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
@@ -77,8 +77,9 @@ public class Constants {
     public static final class OIConstants {
         // Ports
         public static final int kOperatorControllerPort = 0;
-        public static final int kDriverTranslateStickPort = 1;
-        public static final int kDriverRotateStickPort = 2;
+        // public static final int kDriverTranslateStickPort = 1;
+        // public static final int kDriverRotateStickPort = 2;
+        public static final int kDriverControllerPort = 1;
         public static final double kDeadband = 0.05;
 
         // Joysticks
