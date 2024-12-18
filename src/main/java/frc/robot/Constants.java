@@ -28,21 +28,21 @@ public class Constants {
                 new Translation2d(kWheelBase / 2, kTrackWidth / 2)); // front right
 
         // DRIVE Motor Ports
-        public static final int kFrontLeftDriveMotorPort = 2;
-        public static final int kBackLeftDriveMotorPort = 8;
-        public static final int kFrontRightDriveMotorPort = 4;
-        public static final int kBackRightDriveMotorPort = 6;
+        public static final int kFrontLeftDriveMotorPort = 8;
+        public static final int kBackLeftDriveMotorPort = 6;
+        public static final int kFrontRightDriveMotorPort = 3;
+        public static final int kBackRightDriveMotorPort = 10;
 
         // TURNING Motor Ports
-        public static final int kFrontLeftTurningMotorPort = 1;
-        public static final int kBackLeftTurningMotorPort = 7;
-        public static final int kFrontRightTurningMotorPort = 3;
-        public static final int kBackRightTurningMotorPort = 5;
+        public static final int kFrontLeftTurningMotorPort = 7;
+        public static final int kBackLeftTurningMotorPort = 5;
+        public static final int kFrontRightTurningMotorPort = 4;
+        public static final int kBackRightTurningMotorPort = 2;
 
         // CANCoder Ids
-        public static final int kFrontLeftCANCoderId = 20;
+        public static final int kFrontLeftCANCoderId = 21;
         public static final int kBackLeftCANCoderId = 23;
-        public static final int kFrontRightCANCoderId = 21;
+        public static final int kFrontRightCANCoderId = 24;
         public static final int kBackRightCANCoderId = 22;
 
         // Invert booleans | We use MK4i modules so the turning motors are inverted
@@ -53,7 +53,7 @@ public class Constants {
 
         // Turning encoder offsets
         public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 3.927;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 1.39;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 1.147;
         public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 4.71;
         public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.047;
 
@@ -93,5 +93,6 @@ public class Constants {
         // Buttons
         public static final int kDriverResetGyroButtonId = 2;
         public static final int kDriverStopButtonId = 10;
-    } 
+        public static final int kDriverSpinIntakeId = 3;
+    }
 }
