@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
@@ -101,6 +102,14 @@ public class SwerveModule extends SubsystemBase{
     public SwerveModuleState getModuleState() {
         return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
     }
+
+    public SwerveModulePosition getPosition() {
+        return new SwerveModulePosition(
+            getDrivePosition() * 1/60 * 0.89, // modified to be close to a meter, may not be very accurate original:  * 1/60 * 0.89
+            new Rotation2d(getAbsoluteEncoderRad())
+        );
+    }
+
 
     public void stop() {
         driveMotor.set(0);

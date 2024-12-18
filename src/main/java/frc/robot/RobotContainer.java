@@ -25,6 +25,8 @@ import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.Constants.OIConstants;
 
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 
 public class RobotContainer {
 
@@ -32,7 +34,7 @@ public class RobotContainer {
     private final SwerveSubsystem swerveSubsystem;
 
     // Control Inputs
-    private final Joystick operatorJoystick = new Joystick(OIConstants.kOperatorControllerPort);
+    // private final Joystick operatorJoystick = new Joystick(OIConstants.kOperatorControllerPort);
     private final Joystick driverJoystick = new Joystick(OIConstants.kDriverControllerPort);
     // private final Joystick translateStick = new Joystick(OIConstants.kDriverTranslateStickPort);
     // private final Joystick rotateStick = new Joystick(OIConstants.kDriverRotateStickPort);
@@ -67,7 +69,7 @@ public class RobotContainer {
 
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return new PathPlannerAuto("New Auto");
     }
     
 }

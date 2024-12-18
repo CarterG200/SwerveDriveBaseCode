@@ -1,15 +1,24 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 
@@ -56,6 +65,14 @@ public class SwerveSubsystem extends SubsystemBase {
 
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);  
 
+    public final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
+            Constants.DriveConstants.kDriveKinematics, getRotation2d(),
+            new SwerveModulePosition[] {
+              backLeft.getPosition(),
+              backRight.getPosition(),
+              frontLeft.getPosition(),
+              frontRight.getPosition()
+            }, new Pose2d(0, 0, new Rotation2d()));
 
 
     public SwerveSubsystem() {
@@ -74,11 +91,67 @@ public class SwerveSubsystem extends SubsystemBase {
             }
         }).start();
 
+        // Configure AutoBuilder last
+        AutoBuilder.configureHolonomic(
+            this::getPose, // Robot pose supplier
+            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                    3.6, // Max module speed, in m/s
+                    0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                    new ReplanningConfig() // Default path replanning config. See the API for the options here
+            ),
+            () -> {
+            // Boolean supplier that controls when the path will be mirrored for the red alliance
+            // This will flip the path being followed to the red side of the field.
+            // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
+            },
+            this // Reference to this subsystem to set requirements
+        );
     }
 
     public Command zeroHeading() {
         System.out.println("Gyro Reset");
         return Commands.runOnce(() -> gyro.reset()); // Returns a command to be used on button press
+    }
+
+    public Pose2d getPose() {
+        return m_poseEstimator.getEstimatedPosition();
+    }
+
+    public void resetPose(Pose2d pose) {
+        m_poseEstimator.resetPosition(getRotation2d(), new SwerveModulePosition[] {
+            backLeft.getPosition(),
+            backRight.getPosition(),
+            frontLeft.getPosition(),
+            frontRight.getPosition()
+          }, pose);
+    }
+
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return DriveConstants.kDriveKinematics.toChassisSpeeds(
+            new SwerveModuleState[] {
+                backLeft.getState(),
+                backRight.getState(),
+                frontLeft.getState(),
+                frontRight.getState()
+            }
+        );
+    }
+
+    public void driveRobotRelative(ChassisSpeeds speed) {
+        //ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(speed, 0.02); is this needed?
+        SwerveModuleState states[] = DriveConstants.kDriveKinematics.toSwerveModuleStates(speed);
+        setModuleStates(states);
     }
 
     public ChassisSpeeds getChassisSpeeds() {
