@@ -49,13 +49,13 @@ public class Constants {
         public static final boolean kModuleTurningEncoderReversed = true;
         public static final boolean kModuleDriveEncoderReversed = false;
         public static final boolean kModuleCANCoderReversed = false;
-        public static final boolean kGyroReversed = true;
+        public static final boolean kGyroReversed = false;
 
         // Turning encoder offsets
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 3.927;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 1.39;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 4.71;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.047;
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 225.5 * Math.PI / 180;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 73.5 * Math.PI / 180;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 268 * Math.PI / 180;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 61 * Math.PI / 180;
 
         // Robot speeds
         public static final double kPhysicalMaxSpeedMetersPerSecond = 3.6; // PHYSICAL max speed of the modules (safety cap) 3.6
@@ -92,6 +92,7 @@ public class Constants {
 
         // Buttons
         public static final int kDriverResetGyroButtonId = 2;
+        public static final int kDriverResetCoordsButtonId = 3;
         public static final int kDriverStopButtonId = 10;
     } 
 }

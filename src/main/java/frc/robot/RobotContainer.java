@@ -63,6 +63,7 @@ public class RobotContainer {
     private void configureBindings() {
 
         new JoystickButton(driverJoystick, OIConstants.kDriverResetGyroButtonId).onTrue(swerveSubsystem.zeroHeading());
+        new JoystickButton(driverJoystick, OIConstants.kDriverResetCoordsButtonId).onTrue(swerveSubsystem.zeroCoords());
         // new JoystickButton(driverJoystick, OIConstants.kDriverStopButtonId).onTrue(new EmergencyStopMechanismsCmd());            MUST HAVE INCASE OF EMERGENCY
     }
 

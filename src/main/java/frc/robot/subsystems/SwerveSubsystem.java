@@ -13,8 +13,12 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,6 +28,8 @@ import frc.robot.Constants.DriveConstants;
 
 
 public class SwerveSubsystem extends SubsystemBase {
+
+    private final GenericEntry sb_gyro, sb_coord;
     
     private final SwerveModule frontLeft = new SwerveModule(
         DriveConstants.kFrontLeftDriveMotorPort,
@@ -77,6 +83,19 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public SwerveSubsystem() {
 
+        sb_gyro = Shuffleboard.getTab("Driver")
+            .add("Gyro", 0.0)
+            .withWidget(BuiltInWidgets.kGyro)
+            .withPosition(0, 2)
+            .withSize(3, 3)
+            .getEntry();
+
+        sb_coord = Shuffleboard.getTab("Driver")
+            .add("Coordinates", "")
+            .withPosition(8, 3)
+            .withSize(4, 1)
+            .getEntry();
+
         frontLeft.resetEncoders();
         frontRight.resetEncoders();
         backLeft.resetEncoders();
@@ -85,7 +104,7 @@ public class SwerveSubsystem extends SubsystemBase {
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
-                gyro.setAngleAdjustment(180);
+                gyro.setAngleAdjustment(0);
                 zeroHeading();
             } catch (Exception e) {
             }
@@ -119,9 +138,28 @@ public class SwerveSubsystem extends SubsystemBase {
         );
     }
 
+    @Override
+    public void periodic() {
+        m_poseEstimator.update(getRotation2d(),
+            new SwerveModulePosition[] {
+                backLeft.getPosition(),
+                backRight.getPosition(),
+                frontLeft.getPosition(),
+                frontRight.getPosition()
+        });
+        sb_gyro.setDouble(getHeading());
+        sb_coord.setString(getPose().toString());
+    }
+
+
     public Command zeroHeading() {
         System.out.println("Gyro Reset");
         return Commands.runOnce(() -> gyro.reset()); // Returns a command to be used on button press
+    }
+
+    public Command zeroCoords() {
+        System.out.println("Coords Reset");
+        return Commands.runOnce(() -> resetPose(new Pose2d(0,0,getRotation2d())));
     }
 
     public Pose2d getPose() {
