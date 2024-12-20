@@ -105,7 +105,7 @@ public class SwerveModule extends SubsystemBase{
 
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            getDrivePosition(), // modified to be close to a meter, may not be very accurate original:  * 1/60 * 0.89
+            getDrivePosition() / 1.0256410256, // modified to be more accurate
             new Rotation2d(getAbsoluteEncoderRad())
         );
     }
