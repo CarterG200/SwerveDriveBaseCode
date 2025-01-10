@@ -67,17 +67,15 @@ public class SwerveSubsystem extends SubsystemBase {
         DriveConstants.kBackRightDriveAbsoluteEncoderOffsetRad,
         DriveConstants.kModuleCANCoderReversed);
 
-
-
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);  
 
     public final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
             Constants.DriveConstants.kDriveKinematics, getRotation2d(),
             new SwerveModulePosition[] {
-              backLeft.getPosition(),
-              backRight.getPosition(),
               frontLeft.getPosition(),
-              frontRight.getPosition()
+              frontRight.getPosition(),
+              backLeft.getPosition(),
+              backRight.getPosition()
             }, new Pose2d(0, 0, new Rotation2d()));
 
 
@@ -104,7 +102,7 @@ public class SwerveSubsystem extends SubsystemBase {
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
-                gyro.setAngleAdjustment(0);
+                gyro.setAngleAdjustment(180);
                 zeroHeading();
             } catch (Exception e) {
             }
@@ -142,10 +140,10 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
         m_poseEstimator.update(getRotation2d(),
             new SwerveModulePosition[] {
-                backLeft.getPosition(),
-                backRight.getPosition(),
                 frontLeft.getPosition(),
-                frontRight.getPosition()
+                frontRight.getPosition(),
+                backLeft.getPosition(),
+                backRight.getPosition()
         });
         sb_gyro.setDouble(getHeading());
         sb_coord.setString(getPose().toString());

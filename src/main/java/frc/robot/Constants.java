@@ -49,7 +49,7 @@ public class Constants {
         public static final boolean kModuleTurningEncoderReversed = true;
         public static final boolean kModuleDriveEncoderReversed = false;
         public static final boolean kModuleCANCoderReversed = false;
-        public static final boolean kGyroReversed = false;
+        public static final boolean kGyroReversed = true;
 
         // Turning encoder offsets
         public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 225.5 * Math.PI / 180;
